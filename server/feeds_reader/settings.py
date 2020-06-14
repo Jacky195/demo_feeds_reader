@@ -165,6 +165,9 @@ LOGGING = {
     }
 }
 
-# Fetched Sites
 
-FEED_SITES = []
+# Fetched Sites
+FEED_SITES = [
+    'crawlers.sites.washingtonpost',
+    'crawlers.sites.feedforall'
+]

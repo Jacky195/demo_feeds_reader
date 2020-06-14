@@ -10,5 +10,4 @@ class Item(models.Model):
     date_published = models.DateTimeField(null=True)
     date_modified = models.DateTimeField(null=True)
     # custom fields
-    content = models.TextField(default='')  # will be fetched async
     date_fetched = models.DateTimeField(null=True)
