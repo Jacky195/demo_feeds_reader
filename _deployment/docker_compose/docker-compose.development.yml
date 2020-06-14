@@ -1,0 +1,106 @@
+version: '3.7'
+
+services:
+
+
+# Client - Web User & Admin
+  feeds_reader_client_development:
+    container_name: feeds_reader_client_${MY_CUSTOM_ENV_DOCKER}
+    image: feeds_reader_client_${MY_CUSTOM_ENV_DOCKER}
+    build:
+      context: ../../client
+      dockerfile: ./Dockerfile/${MY_CUSTOM_ENV_DOCKER}
+    restart: always
+    volumes:
+      - ../../client:/opt/app/
+      - /opt/app/node_modules
+    depends_on:
+      - feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
+    env_file:
+      - .env
+    ports:
+      - ${PORT_CLIENT_USER_DEVELOPMENT}:${PORT_CLIENT_USER_DEVELOPMENT}
+      - ${PORT_CLIENT_ADMIN_DEVELOPMENT}:${PORT_CLIENT_ADMIN_DEVELOPMENT}
+    networks:
+      - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
+
+
+# Server
+  feeds_reader_server_development:
+    container_name: feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
+    image: feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
+    build:
+      context: ../../server
+      dockerfile: ./Dockerfile/${MY_CUSTOM_ENV_DOCKER}
+    restart: always
+    command: python /opt/manage.py runserver 0.0.0.0:${PORT_SERVER_DEVELOPMENT}
+    volumes:
+      - ../../server:/opt
+    env_file:
+      - .env
+    environment:
+      - DB_HOST=feeds_reader_database_development
+      - DB_PORT=5432
+      - DB_NAME=feeds_reader
+      - DB_USER=feeds_reader
+      - DB_PASSWORD=MWqEuPJauLhF
+    depends_on:
+      - feeds_reader_database_${MY_CUSTOM_ENV_DOCKER}
+    ports:
+      - ${PORT_SERVER_DEVELOPMENT}:${PORT_SERVER_DEVELOPMENT}
+    networks:
+      - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
+
+
+
+# Database
+  feeds_reader_database_development:
+    container_name: feeds_reader_database_${MY_CUSTOM_ENV_DOCKER}
+    image: feeds_reader_database_${MY_CUSTOM_ENV_DOCKER}
+    build:
+      context: ./postgres/${MY_CUSTOM_ENV_DOCKER}
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./postgres/${MY_CUSTOM_ENV_DOCKER}/mounted/data:/var/lib/postgresql/data
+    env_file:
+      - .env
+#    ports:
+#      - ${PORT_POSTGRES_DB_DEVELOPMENT}:5432
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+      - POSTGRES_PASSWORD=${POSTGRES_ADMIN_PASSWORD_DEVELOPMENT}
+    networks:
+      - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
+
+
+# Database PGAdmin
+  feeds_reader_pgadmin_development:
+    image: feeds_reader_pgadmin_${MY_CUSTOM_ENV_DOCKER}
+    container_name: feeds_reader_pgadmin_${MY_CUSTOM_ENV_DOCKER}
+    build:
+      context: ./pgadmin/${MY_CUSTOM_ENV_DOCKER}
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - feeds_reader_database_${MY_CUSTOM_ENV_DOCKER}
+    ports:
+      - ${PORT_PGADMIN_DEVELOPMENT}:${PORT_PGADMIN_DEVELOPMENT}
+    volumes:
+      - ./pgadmin/${MY_CUSTOM_ENV_DOCKER}/mounted/data:/var/lib/pgadmin
+    env_file:
+      - .env
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_ADMIN_EMAIL_DEVELOPMENT}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_DEFAULT_PASSWORD_DEVELOPMENT}
+      - PGADMIN_LISTEN_ADDRESS=0.0.0.0
+      - PGADMIN_LISTEN_PORT=${PORT_PGADMIN_DEVELOPMENT}
+    networks:
+      - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
+
+networks:
+  feeds_reader_network_development:
+    driver: bridge
+
+
+
