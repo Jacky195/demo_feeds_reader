@@ -9,7 +9,7 @@ services:
     image: feeds_reader_client_${MY_CUSTOM_ENV_DOCKER}
     build:
       context: ../../client
-      dockerfile: ./Dockerfile/${MY_CUSTOM_ENV_DOCKER}
+      dockerfile: ./Dockerfile.${MY_CUSTOM_ENV_DOCKER}
     restart: always
     volumes:
       - ../../client:/opt/app/
@@ -31,14 +31,16 @@ services:
     image: feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
     build:
       context: ../../server
-      dockerfile: ./Dockerfile/${MY_CUSTOM_ENV_DOCKER}
+      dockerfile: ./Dockerfile.${MY_CUSTOM_ENV_DOCKER}
     restart: always
-    command: python /opt/manage.py runserver 0.0.0.0:${PORT_SERVER_DEVELOPMENT}
+    command: python /opt/app/manage.py runserver 0.0.0.0:${PORT_SERVER_DEVELOPMENT}
     volumes:
-      - ../../server:/opt
+      - ../../server:/opt/app
+      - ../../_deployment/logs/${MY_CUSTOM_ENV_DOCKER}/server_backend:/opt/logs
     env_file:
       - .env
     environment:
+      - DEPLOYMENT_ENV=${MY_CUSTOM_ENV_DOCKER}
       - DB_HOST=feeds_reader_database_development
       - DB_PORT=5432
       - DB_NAME=feeds_reader
