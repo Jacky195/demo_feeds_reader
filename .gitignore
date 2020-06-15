@@ -1,1 +1,10 @@
 .idea/
+
+_deployment/logs/
+!_deployment/logs/*/*/.gitkeep
+
+_deployment/docker_compose/postgres/*/mounted/data
+!_deployment/docker_compose/postgres/*/mounted/data/.gitkeep
+
+_deployment/docker_compose/pgadmin/*/mounted/data
+!_deployment/docker_compose/pgadmin/*/mounted/data/.gitkeep

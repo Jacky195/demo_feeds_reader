@@ -1,0 +1,1 @@
+python manage.py fetch_all --sites washingtonpost,feedforall
