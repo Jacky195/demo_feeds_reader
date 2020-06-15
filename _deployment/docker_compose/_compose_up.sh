@@ -4,6 +4,7 @@ MY_ENV_STAG="staging"
 MY_ENV_PROD="production"
 
 ./_remove_nonetag.sh
+chmod -R +x ../..
 
 echo "--------------+++++ Environment: ${MY_CUSTOM_ENV_DOCKER} +++++--------------"
 

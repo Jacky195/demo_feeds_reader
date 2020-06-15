@@ -1,11 +1,10 @@
-from crawlers.management.base_command import CrawlerCommand
 from django.conf import settings
 import importlib
 import logging
+from crawlers.management.base_command import CrawlerCommand
+from utils.Constants import LIMIT_ALL
 
 logger = logging.getLogger('crawlers')
-NEW_LINE = '\n----------------\n'
-LIMIT_ALL = 'ALL'
 
 
 class Command(CrawlerCommand):

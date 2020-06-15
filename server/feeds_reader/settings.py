@@ -1,27 +1,19 @@
 import os
 
 DEPLOYMENT_ENV = os.environ.get('DEPLOYMENT_ENV')
-# if DEPLOYMENT_ENV == 'development':
-#     from settings_development import *
-# elif DEPLOYMENT_ENV == 'staging':
-#     from settings_staging import *
-# elif DEPLOYMENT_ENV == 'production':
-#     from settings_production import *
-# else:
-#     print("Invalid deployment environment")
-
-SECRET_KEY = 'sgvi)47e-9ait6mw5o97ccp$3!@fa)mz%24tm3p0)t82tf5gwr'
-DEBUG = True
-ALLOWED_HOSTS = ['0.0.0.0', 'localhost']
-
-
-
+if DEPLOYMENT_ENV == 'development':
+    from feeds_reader.settings_development import *
+elif DEPLOYMENT_ENV == 'staging':
+    from feeds_reader.settings_staging import *
+elif DEPLOYMENT_ENV == 'production':
+    from feeds_reader.settings_production import *
+else:
+    print("Invalid deployment environment")
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -72,7 +64,10 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT')
+        'PORT': os.environ.get('DB_PORT'),
+        'TEST': {
+            'NAME': 'feeds_reader_test',
+        }
     }
 }
 
@@ -107,7 +102,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)

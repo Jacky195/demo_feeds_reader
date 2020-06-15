@@ -1,4 +1,8 @@
 class BaseSite(object):
 
-    def fetch_all(self, item):
+    @classmethod
+    def save_item(cls, item):
+        raise NotImplementedError()
+
+    def fetch_all(self):
         raise NotImplementedError()
