@@ -6,8 +6,8 @@
   "scripts": {
     "clean-user": "rm -rf ./web_user/dist",
     "clean-admin": "rm -rf ./web_admin/dist",
-    "start-user-dev": "webpack-dev-server --config ./webpack.config.web.js --env.mode development --env.component user",
-    "start-admin-dev": "webpack-dev-server --config ./webpack.config.web.js --env.mode development --env.component admin",
+    "start-user-dev": "ABC=123 webpack-dev-server --config ./webpack.config.web.js --env.mode development --env.component user",
+    "start-admin-dev": "ABC=123 webpack-dev-server --config ./webpack.config.web.js --env.mode development --env.component admin",
     "start-client-dev": "npm run start-user-dev & nohup npm run start-admin-dev",
     "build-user": "npm run clean-user && mkdir ./web_user/dist && cp -r ./web_user/public/* ./web_user/dist && webpack --config ./webpack.config.web.js --progress --env.mode production --env.component user",
     "build-admin": "npm run clean-admin && mkdir ./web_admin/dist && cp -r ./web_admin/public/* ./web_admin/dist && webpack --config ./webpack.config.web.js --progress --env.mode production --env.component admin",
@@ -41,11 +41,15 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
+    "axios": "^0.19.2",
     "bootstrap": "^4.5.0",
     "history": "^4.10.1",
+    "query-string": "^6.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-notifications": "^1.6.0",
     "react-router-dom": "^5.2.0",
-    "reactstrap": "^8.4.1"
+    "reactstrap": "^8.4.1",
+    "shortid": "^2.2.15"
   }
 }

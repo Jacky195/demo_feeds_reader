@@ -1,8 +1,8 @@
 from django.test import TestCase
-from crawlers.models import Item
+from crawlers.models import Feed
 from utils.MiscUtils import MiscUtils
 
-ITEM_SAMPLE = {
+FEED_SAMPLE = {
     "source_code": "test_source_code",
     "author": "test_author",
     "title": "test_title",
@@ -11,24 +11,24 @@ ITEM_SAMPLE = {
 }
 
 
-class ItemTestCase(TestCase):
+class FeedTestCase(TestCase):
 
     def setUp(self):
-        item = Item.objects.create(
-                                    source_code=ITEM_SAMPLE["source_code"],
-                                    author=ITEM_SAMPLE["author"],
-                                    title=ITEM_SAMPLE["title"],
-                                    description=ITEM_SAMPLE["description"],
-                                    original_url=ITEM_SAMPLE["original_url"],
+        feed = Feed.objects.create(
+                                    source_code=FEED_SAMPLE["source_code"],
+                                    author=FEED_SAMPLE["author"],
+                                    title=FEED_SAMPLE["title"],
+                                    description=FEED_SAMPLE["description"],
+                                    original_url=FEED_SAMPLE["original_url"],
                                     date_published=MiscUtils.now_date(),
                                     date_fetched=MiscUtils.now_date()
                                     )
-        self.item_id = item.id
+        self.feed_id = feed.id
 
     def test_get_by_id(self):
-        item = Item.get_by_id(self.item_id)
-        self.assertEqual(item.get_source_code(), ITEM_SAMPLE['source_code'])
-        self.assertEqual(item.get_author(), ITEM_SAMPLE['author'])
-        self.assertEqual(item.get_title(), ITEM_SAMPLE['title'])
-        self.assertEqual(item.get_description(), ITEM_SAMPLE['description'])
-        self.assertEqual(item.get_original_url(), ITEM_SAMPLE['original_url'])
+        feed = Feed.get_by_id(self.feed_id)
+        self.assertEqual(feed.get_source_code(), FEED_SAMPLE['source_code'])
+        self.assertEqual(feed.get_author(), FEED_SAMPLE['author'])
+        self.assertEqual(feed.get_title(), FEED_SAMPLE['title'])
+        self.assertEqual(feed.get_description(), FEED_SAMPLE['description'])
+        self.assertEqual(feed.get_original_url(), FEED_SAMPLE['original_url'])

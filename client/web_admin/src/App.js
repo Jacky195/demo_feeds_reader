@@ -1,8 +1,9 @@
 import React from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
+import {NotificationContainer} from 'react-notifications';
 import { Container } from 'reactstrap';
 import { FeedManageView, FeedCreateView } from './views';
-import { FEED }  from './config/routes';
+import { FEED }  from './config';
 
 
 function App() {
@@ -12,6 +13,9 @@ function App() {
                 <Route exact path={[FEED.CREATE, FEED.EDIT]} component={ FeedCreateView }/>
                 <Route path="*" component={ FeedManageView }/>
             </Switch>
+
+            <NotificationContainer/>
+
         </Container>
     )
 }

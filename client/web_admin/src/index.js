@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import { Router, Route, Switch, Redirect } from "react-router-dom";
 import { createBrowserHistory } from "history";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'react-notifications/lib/notifications.css';
+
 import './static/App.css';
 
 import App from './App';
