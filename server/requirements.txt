@@ -4,10 +4,12 @@ chardet==3.0.4
 Django==2.2
 django-cors-headers==3.4.0
 django-cors-middleware==1.5.0
+django-redis==4.12.1
 idna==2.9
 psycopg2-binary==2.8.3
 python-dateutil==2.8.1
 pytz==2020.1
+redis==3.5.3
 requests==2.23.0
 six==1.15.0
 sqlparse==0.3.1

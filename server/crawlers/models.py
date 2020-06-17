@@ -1,4 +1,6 @@
+from django.core.cache import cache
 from django.db import models
+from django.conf import settings
 from utils.MiscUtils import MiscUtils
 from utils.Constants import TRUNCATED_TEXT_LENGTH_SHORT, TRUNCATED_TEXT_LENGTH_LONG
 import logging
@@ -83,7 +85,15 @@ class Feed(models.Model):
     @staticmethod
     def get_by_id(id):
         try:
-            return Feed.objects.get(id=id)
+            cache_key = MemCache.gen_key([id])
+            cache_obj = MemCache.get_cache(cache_key)
+            if cache_obj:
+                return cache_obj
+            # no cache hit
+            feed = Feed.objects.get(id=id)
+            # save to cache
+            MemCache.set_cache(cache_key, feed)
+            return feed
         except e:
             logger.error(e)
             return None
@@ -92,15 +102,33 @@ class Feed(models.Model):
     def delete_by_id(id):
         try:
             Feed.objects.get(id=id).delete()
+            # remove cache
+            cache_key = MemCache.gen_key([id])
+            MemCache.delete_cache(cache_key)
+            # clear cache for datatable
+            MemCache.delete_cache_pattern("datatable_*")
             return 'success'
         except e:
             logger.error(e)
             return 'Cannot delete feed id: {}'.format(id)
 
-
     @staticmethod
     def get_all(page, limit, keyword):
         try:
+            cache_key = MemCache.gen_key(['datatable', keyword, limit, page])
+            cache_obj = MemCache.get_cache(cache_key)
+            if cache_obj:
+                # we need to update the "date_fetched" fields, and "Feed.get_by_id" will hit cache
+                feeds = cache_obj['feeds']
+                result = []
+                for feed in feeds:
+                    feed_tmp = Feed.get_by_id(feed['id']).to_json()
+                    feed['date_fetched'] = feed_tmp['date_fetched']
+                    result.append(feed)
+                cache_obj['feeds'] = result
+                return cache_obj
+
+            # no cache hit
             feeds = Feed.objects.filter(source_code__icontains=keyword).order_by('-date_fetched')
             total_count = feeds.count()
             feeds = feeds[(page-1)*limit:page*limit]
@@ -111,10 +139,13 @@ class Feed(models.Model):
                 feed_obj = feed.to_json()
                 feed_obj['idx'] = idx
                 result.append(feed_obj)
-            return {
+            cache_obj = {
                 'feeds': result,
                 'totalPage': int((total_count-1) / limit) + 1
             }
+            # save to cache
+            MemCache.set_cache(cache_key, cache_obj)
+            return cache_obj
         except Exception as e:
             logger.error(e)
             return []
@@ -141,8 +172,41 @@ class Feed(models.Model):
             feed.set_description(description)
             feed.set_original_url(url)
             feed.save()
+            # clear cache for datatable
+            MemCache.delete_cache_pattern("datatable_*")
+            # save to cache
+            cache_key = MemCache.gen_key([feed.id])
+            MemCache.set_cache(cache_key, feed)
             return "success"
         except Exception as e:
             logger.error(e)
             return "Cannot create feed"
 
+
+# using Redis
+class MemCache:
+
+    def __init__(self):
+        pass
+
+    @staticmethod
+    def gen_key(lst):
+        new_lst = [str(obj) for obj in lst]
+        return '_'.join(new_lst)
+
+    @staticmethod
+    def get_cache(key, default_value=None):
+        value = cache.get(key)
+        return value if value else default_value
+
+    @staticmethod
+    def set_cache(key, value, timeout=settings.CACHE_TIMEOUT_UNTIL_DELETED):
+        cache.set(key, value, timeout)
+
+    @staticmethod
+    def delete_cache(key):
+        cache.delete(key)
+
+    @staticmethod
+    def delete_cache_pattern(pattern):
+        cache.delete_pattern(pattern)

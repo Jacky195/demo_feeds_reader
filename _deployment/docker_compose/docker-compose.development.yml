@@ -53,7 +53,22 @@ services:
     networks:
       - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
 
-
+# Redis
+  feeds_reader_cache_redis_development:
+    image: feeds_reader_cache_redis_${MY_CUSTOM_ENV_DOCKER}
+    container_name: feeds_reader_cache_redis_${MY_CUSTOM_ENV_DOCKER}
+    build:
+      context: ./redis/${MY_CUSTOM_ENV_DOCKER}
+      dockerfile: Dockerfile
+    restart: always
+    volumes:
+      - ./redis/${MY_CUSTOM_ENV_DOCKER}/mounted/data:/data
+      - ./redis/${MY_CUSTOM_ENV_DOCKER}/mounted/config/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../logs/${MY_CUSTOM_ENV_DOCKER}/redis:/var/log/redis
+    env_file:
+      - .env
+    networks:
+      - feeds_reader_network_${MY_CUSTOM_ENV_DOCKER}
 
 # Database
   feeds_reader_database_development:

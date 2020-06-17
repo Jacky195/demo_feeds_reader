@@ -96,7 +96,7 @@ export default class FeedManageView extends React.Component{
                                        onKeyDown={this.onEnterPress}
                                 />
                                 <InputGroupAddon addonType="append">
-                                    <Button color="success">
+                                    <Button color="success" onClick={this.getFeeds}>
                                         <FontAwesome name="filter"/>
                                     </Button>
                                 </InputGroupAddon>

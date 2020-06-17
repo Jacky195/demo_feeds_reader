@@ -78,6 +78,18 @@ DATABASES = {
 }
 
 
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://feeds_reader_cache_redis_{}:6379/1".format(DEPLOYMENT_ENV),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "joinus_{}".format(DEPLOYMENT_ENV)
+    }
+}
+
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
@@ -172,3 +184,7 @@ FEED_SITES = [
     'crawlers.sites.washingtonpost',
     'crawlers.sites.feedforall'
 ]
+
+
+CACHE_TIMEOUT_UNTIL_DELETED = None  # never expire unless being deleted manually by code
+CACHE_TIMEOUT_AUTO = 60*60  # 60 minutes
