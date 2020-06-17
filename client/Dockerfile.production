@@ -1,0 +1,20 @@
+# Client: User & Admin
+
+# node 12.15.0
+FROM alpine:3.11.6
+
+RUN apk update && apk add --update nodejs npm
+WORKDIR /opt/app
+COPY package*.json ./
+RUN npm install && npm install -g webpack
+COPY . .
+
+RUN npm run build-client
+
+WORKDIR /opt/dist/user
+RUN cp -R /opt/app/web_user/dist/* .
+
+WORKDIR /opt/dist/admin
+RUN cp -R /opt/app/web_admin/dist/* .
+
+CMD ["top"]

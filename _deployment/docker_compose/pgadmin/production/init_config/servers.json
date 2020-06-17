@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Production",
+            "Group": "Postgres Production",
+            "Port": 5432,
+            "Username": "postgres",
+            "Host": "feeds_reader_database_production",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}

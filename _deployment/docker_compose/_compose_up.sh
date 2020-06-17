@@ -39,4 +39,9 @@ docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCKER}.yml logs -f feeds_rea
 docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCKER}.yml logs -f feeds_reader_server_${MY_CUSTOM_ENV_DOCKER} > ../logs/${MY_CUSTOM_ENV_DOCKER}/dc_services/feeds_reader_server.log &
 docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCKER}.yml logs -f feeds_reader_database_${MY_CUSTOM_ENV_DOCKER} > ../logs/${MY_CUSTOM_ENV_DOCKER}/dc_services/feeds_reader_database.log &
 
+if [ $MY_CUSTOM_ENV_DOCKER == $MY_ENV_PROD ]
+then
+  docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCKER}.yml logs -f feeds_reader_nginx_${MY_CUSTOM_ENV_DOCKER} > ../logs/${MY_CUSTOM_ENV_DOCKER}/dc_services/feeds_reader_nginx.log &
+fi
+
 echo "${NEW_LINE}${NEW_LINE}--------------+++++ ${MY_CUSTOM_ENV_DOCKER}: Done, it's good to go :) "
