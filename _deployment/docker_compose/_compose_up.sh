@@ -25,8 +25,8 @@ COMPOSE_HTTP_TIMEOUT=300 docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCK
 
 if [ "$MY_CUSTOM_ENV_INITIAL" == true ]
 then
-    echo "${NEW_LINE}${NEW_LINE}--------------+++++ ${MY_CUSTOM_ENV_DOCKER}: Sleep 15s before initializing database +++++--------------"
-    sleep 15
+    echo "${NEW_LINE}${NEW_LINE}--------------+++++ ${MY_CUSTOM_ENV_DOCKER}: Sleep 30s before initializing database +++++--------------"
+    sleep 30
     docker exec feeds_reader_server_${MY_CUSTOM_ENV_DOCKER} bash -c 'python /opt/app/manage.py makemigrations && python /opt/app/manage.py migrate'
 fi
 

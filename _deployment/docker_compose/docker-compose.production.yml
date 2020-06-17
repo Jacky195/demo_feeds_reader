@@ -14,8 +14,8 @@ services:
     volumes:
       - feeds_reader_client_volume_${MY_CUSTOM_ENV_DOCKER}:/opt/dist/
       - /opt/app/node_modules
-#    depends_on:
-#      - feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
+    depends_on:
+      - feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
     env_file:
       - .env
     networks:
@@ -120,6 +120,9 @@ services:
       - ./nginx/${MY_CUSTOM_ENV_DOCKER}/mounted/ssl:/opt/ssl
       - ./nginx/${MY_CUSTOM_ENV_DOCKER}/mounted/config:/etc/nginx/conf.d
       - ../logs/${MY_CUSTOM_ENV_DOCKER}/nginx:/var/log/nginx/feeds_reader
+    depends_on:
+      - feeds_reader_client_${MY_CUSTOM_ENV_DOCKER}
+      - feeds_reader_server_${MY_CUSTOM_ENV_DOCKER}
     ports:
       - ${PORT_CLIENT_USER_PRODUCTION}:${PORT_CLIENT_USER_PRODUCTION}
       - ${PORT_CLIENT_ADMIN_PRODUCTION}:${PORT_CLIENT_ADMIN_PRODUCTION}

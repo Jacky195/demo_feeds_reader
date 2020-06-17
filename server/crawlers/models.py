@@ -124,6 +124,7 @@ class Feed(models.Model):
                 for feed in feeds:
                     feed_tmp = Feed.get_by_id(feed['id']).to_json()
                     feed['date_fetched'] = feed_tmp['date_fetched']
+                    feed['date_published'] = feed_tmp['date_published']
                     result.append(feed)
                 cache_obj['feeds'] = result
                 return cache_obj
