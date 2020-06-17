@@ -7,7 +7,6 @@ export default class MiscUtils {
         return shortid.generate();
     }
 
-
     static setToCookie(key, value, expiredInUTCString) {
         let expires = "";
         if (!expiredInUTCString) {
@@ -20,7 +19,6 @@ export default class MiscUtils {
         document.cookie = key + "=" + (value || "")  + expires + "; path=/";
     }
 
-
     static getFromCookie(key, defaultVal) {
         let nameEQ = key + "=";
         let ca = document.cookie.split(';');
@@ -32,11 +30,9 @@ export default class MiscUtils {
         return defaultVal;
     }
 
-
     static clearCookie(key) {
         this.setToCookie(key, null, '1970-01-00T00:00:00.000Z')
     }
-
 
     static showNotification(message, type) {
         switch (type) {
@@ -48,17 +44,14 @@ export default class MiscUtils {
         }
     }
 
-
     static showErrorMessage(message) {
         this.showNotification(message, 'error');
     }
-
 
     static commonCallbackError(component, error) {
         component.setState({isProcessing: false});
         this.showErrorMessage(error.message);
     }
-
 
     static componentChangeInput(component, e, key) {
         let obj = {};

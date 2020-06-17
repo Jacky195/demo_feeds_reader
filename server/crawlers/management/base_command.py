@@ -4,7 +4,6 @@ from django.core.management.base import BaseCommand
 class CrawlerCommand(BaseCommand):
 
     def add_arguments(self, parser):
-
         # Named (optional) arguments
         parser.add_argument(
             '--limit',
@@ -13,7 +12,6 @@ class CrawlerCommand(BaseCommand):
             type=int,
             help='Number of items the site will be iterated through. No input means fetched all the items'
         )
-
         parser.add_argument(
             '--sites',
             '-s',

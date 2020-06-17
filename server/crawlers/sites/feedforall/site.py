@@ -1,11 +1,10 @@
 from utils.HTTPUtils import HTTPUtils
-from crawlers.models import Feed
+from crawlers.models import Feed, MemCache
 from crawlers.sites.base_site import BaseSite
 from crawlers.sites.base_function import BaseFunction
 from crawlers.sites.feedforall.settings import CHANNEL_LIST, DATE_FORMAT, SOURCE_CODE
 from utils.Constants import LIMIT_ALL
 from utils.MiscUtils import MiscUtils
-
 import logging
 logger = logging.getLogger('crawlers')
 
@@ -27,4 +26,6 @@ class FeedForAll(BaseSite):
         feed.save()
 
     def fetch_all(self):
+        # clear cache for datatable
+        MemCache.delete_cache_datatable()
         BaseFunction.fetch_all_xml(self.limit, SOURCE_CODE, CHANNEL_LIST, self.save_feed)

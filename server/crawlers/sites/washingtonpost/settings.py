@@ -7,7 +7,6 @@ NAME_SPACE = {
     'dc': 'http://purl.org/dc/elements/1.1/'
 }
 
-
 CHANNEL_LIST = [
     {
         'name': 'Act Four',

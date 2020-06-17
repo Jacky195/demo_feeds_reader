@@ -1,16 +1,17 @@
 from django.conf import settings
 import importlib
-import logging
 from crawlers.management.base_command import CrawlerCommand
+from crawlers.management.fetch_thread import FetchThread
 from utils.Constants import LIMIT_ALL
-
+import logging
 logger = logging.getLogger('crawlers')
 
 
 class Command(CrawlerCommand):
     help = 'Fetch all the items in specific sites'
 
-    def handle(self, *args, **options):
+    @staticmethod
+    def handle(*args, **options):
         sites = options.get('sites')
         limit = options.get('limit') if options.get('limit') else LIMIT_ALL
         try:
@@ -23,7 +24,7 @@ class Command(CrawlerCommand):
                 site_list = [importlib.import_module('crawlers.sites.%s' % site) for site in sites.split(',')]
             for s in site_list:
                 site = s.get_site(limit=limit)
-                site.fetch_all()
+                FetchThread(site, 'fetch_all').start()
         except ModuleNotFoundError as e:
             logger.error(e)
 

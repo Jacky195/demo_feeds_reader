@@ -11,7 +11,6 @@ export default class Pager extends React.Component{
         currentPage: this.props.page
     };
 
-
     renderPager = () => {
         const { currentPage } = this.state;
         const { totalPage } = this.props;

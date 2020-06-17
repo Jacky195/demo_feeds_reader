@@ -1,5 +1,5 @@
 from utils.HTTPUtils import HTTPUtils
-from crawlers.models import Feed
+from crawlers.models import Feed, MemCache
 from crawlers.sites.base_site import BaseSite
 from crawlers.sites.base_function import BaseFunction
 from crawlers.sites.washingtonpost.settings import CHANNEL_LIST, NAME_SPACE, DATE_FORMAT, SOURCE_CODE
@@ -28,4 +28,6 @@ class WashingtonPostSite(BaseSite):
         feed.save()
 
     def fetch_all(self):
+        # clear cache for datatable
+        MemCache.delete_cache_datatable()
         BaseFunction.fetch_all_xml(self.limit, SOURCE_CODE, CHANNEL_LIST, self.save_feed)

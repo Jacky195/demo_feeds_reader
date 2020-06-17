@@ -129,7 +129,6 @@ USE_TZ = False
 STATIC_URL = '/static/'
 
 
-
 # Logging
 LOGGING = {
     'version': 1,
