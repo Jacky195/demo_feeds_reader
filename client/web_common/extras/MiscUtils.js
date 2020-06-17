@@ -59,4 +59,11 @@ export default class MiscUtils {
         this.showErrorMessage(error.message);
     }
 
+
+    static componentChangeInput(component, e, key) {
+        let obj = {};
+        obj[key] = e.target.value;
+        component.setState(obj);
+    };
+
 }

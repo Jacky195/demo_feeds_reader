@@ -4,6 +4,7 @@
     .container {
         max-width: 1440px;
     }
+    .feedCreateForm {width: 60%; margin-left: 20%; padding-top: 50px;}
 }
 
 .height100Percentage { height: 100%;}
@@ -12,3 +13,4 @@
 .paddingTop10 { padding-top: 10px; }
 .pullRight {float: right;}
 .datatablePager .selectedPager {background: #409fe2; color: white;}
+

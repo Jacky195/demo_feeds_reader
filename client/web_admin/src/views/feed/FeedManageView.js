@@ -4,7 +4,7 @@ import { DataTable } from '../../components';
 import { BlockingComponent } from '../../../../web_common/components';
 import { MiscUtils } from '../../../../web_common/extras';
 import { ApiFeed } from '../../api';
-import { COOKIE_NAME, DEFAULT_PAGE_SIZE, DATATABLE_HEADER_FEED } from '../../config';
+import { COOKIE_NAME, DEFAULT_PAGE_SIZE, DATATABLE_HEADER_FEED, FEED } from '../../config';
 
 
 export default class FeedManageView extends React.Component{
@@ -19,11 +19,11 @@ export default class FeedManageView extends React.Component{
     }
 
 
-    changeInput = (e, key) => {
-        let obj = {};
-        obj[key] = e.target.value;
-        this.setState(obj);
-    };
+    // changeInput = (e, key) => {
+    //     let obj = {};
+    //     obj[key] = e.target.value;
+    //     this.setState(obj);
+    // };
 
 
     onEnterPress = (e) => {
@@ -88,7 +88,7 @@ export default class FeedManageView extends React.Component{
                         <Col sm="3" xs="6">
                             <InputGroup>
                                 <Input placeholder="Filter by Source"
-                                       onChange={(e) => this.changeInput(e, 'filterKeyword')}
+                                       onChange={(e) => MiscUtils.componentChangeInput(this, e, 'filterKeyword')}
                                        onKeyDown={this.onEnterPress}
                                 />
                                 <InputGroupAddon addonType="append">
@@ -97,7 +97,7 @@ export default class FeedManageView extends React.Component{
                             </InputGroup>
                         </Col>
                         <Col sm="9" xs="12">
-                            <Button outline color="danger" size="md"  className="pullRight">+ Add</Button>
+                            <Button outline color="danger" size="md" className="pullRight" href={FEED.CREATE}>+ Add</Button>
                         </Col>
                     </Row>
 

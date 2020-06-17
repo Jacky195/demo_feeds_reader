@@ -4,13 +4,13 @@ import ApiHttp from './http';
 
 export default class ApiFeed {
 
-    // static create = (callbackSuccess, callbackError, data) => {
-    //     const url = URLUtils.buildAPIURL(URL_MAPPING.faq.add);
-    //     ApiHttp.post(url, callbackSuccess, callbackError, data);
-    // };
+    static create = (callbackSuccess, callbackError, data) => {
+        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.CREATE);
+        ApiHttp.post(url, callbackSuccess, callbackError, data);
+    };
 
     static getAll = (callbackSuccess, callbackError, data) => {
-        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.getAll);
+        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.GET_ALL);
         ApiHttp.get(url, callbackSuccess, callbackError, data);
     };
 
@@ -24,6 +24,9 @@ export default class ApiFeed {
     //     ApiHttp.post(url, callbackSuccess, callbackError, data);
     // };
 
-
+    static getAllSources = (callbackSuccess, callbackError) => {
+        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.GET_ALL_SOURCES);
+        ApiHttp.get(url, callbackSuccess, callbackError);
+    };
 
 }

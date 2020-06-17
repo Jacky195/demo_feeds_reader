@@ -1,3 +1,4 @@
+import arrow
 from django.db import models
 from utils.MiscUtils import MiscUtils
 from utils.Constants import TRUNCATED_TEXT_LENGTH_SHORT, TRUNCATED_TEXT_LENGTH_LONG
@@ -22,8 +23,14 @@ class Feed(models.Model):
     def get_source_code(self):
         return self.source_code
 
+    def set_source_code(self, source):
+        self.source_code = source
+
     def get_author(self):
         return self.author
+
+    def set_author(self, author):
+        self.author = author
 
     def get_title(self):
         return self.title
@@ -32,6 +39,9 @@ class Feed(models.Model):
         txt = self.title[:size]
         return txt if len(self.title) <= size else "{}...".format(txt)
 
+    def set_title(self, title):
+        self.title = title
+
     def get_description(self):
         return self.description
 
@@ -39,11 +49,21 @@ class Feed(models.Model):
         txt = MiscUtils.strip_html_tags(self.description)[:size]
         return txt if len(self.description) <= size else "{}...".format(txt)
 
+    def set_description(self, description):
+        self.description = description
+
     def get_original_url(self):
         return self.original_url
 
+    def set_original_url(self, url):
+        self.original_url = url
+
     def get_date_published(self):
-        return MiscUtils.datetime_to_string(self.date_published)
+        return arrow.get(self.date_published).humanize()
+        # return MiscUtils.datetime_to_string(self.date_published)
+
+    def set_date_published(self, date_obj):
+        self.date_published = date_obj
 
     def to_json(self):
         return {
@@ -67,7 +87,7 @@ class Feed(models.Model):
     @staticmethod
     def get_all(page, limit, keyword):
         try:
-            feeds = Feed.objects.filter(source_code__icontains=keyword)
+            feeds = Feed.objects.filter(source_code__icontains=keyword).order_by('-date_fetched')
             total_count = feeds.count()
             feeds = feeds[(page-1)*limit:page*limit]
             idx = (page-1)*limit
@@ -84,4 +104,28 @@ class Feed(models.Model):
         except Exception as e:
             logger.error(e)
             return []
+
+    @staticmethod
+    def get_all_sources():
+        try:
+            sources = Feed.objects.all().values_list('source_code', flat=True).distinct()
+            return sources
+        except Exception as e:
+            logger.error(e)
+            return []
+
+    @staticmethod
+    def create(source, title, description, url=None):
+        try:
+            feed = Feed()
+            feed.set_source_code(source)
+            feed.set_title(title)
+            feed.set_description(description)
+            feed.set_original_url(url)
+            feed.set_date_published(MiscUtils.now_date())
+            feed.save()
+            return "success"
+        except Exception as e:
+            logger.error(e)
+            return "Cannot create feed"
 

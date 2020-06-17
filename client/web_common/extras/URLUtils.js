@@ -37,6 +37,7 @@ export default class URLUtils {
         );
     }
 
+
     static buildAPIURL(backendURL, url, paramsDict) {
         let tempURL = backendURL + '/api' + url;
         if (paramsDict)
@@ -44,5 +45,9 @@ export default class URLUtils {
         return tempURL;
     }
 
+
+    static moveToURL(url) {
+        window.location.href = url;
+    }
 
 }

@@ -20,7 +20,7 @@ class HTTPUtils:
             return None
 
     @staticmethod
-    def format_data_for_ajax(data):
+    def format_data_for_api(data):
         if isinstance(data, dict) and ('status' not in data):
             data['status'] = 'success'
         return HttpResponse(json.dumps(data), content_type='application/json')

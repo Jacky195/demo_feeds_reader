@@ -3,6 +3,8 @@
 export const ADMIN_URL_MAPPING = {
 
     FEED: {
-        getAll: '/admin/feed'
+        CREATE: '/admin/feed/',
+        GET_ALL: '/admin/feed/',
+        GET_ALL_SOURCES: '/admin/feed/getAllSources'
     }
 };
