@@ -14,7 +14,7 @@ export default class URLUtils {
             const paramsTxt = queryString.stringify(data);
             if (method === 'get')
                 config['url'] = url + '?' + paramsTxt;
-            else if (method === 'post')
+            else // post put delete
                 config['data'] = paramsTxt; // for django backend
         }
         let headers = {'Content-type': 'application/x-www-form-urlencoded', 'Accept': 'application/json'};
@@ -48,6 +48,11 @@ export default class URLUtils {
 
     static moveToURL(url) {
         window.location.href = url;
+    }
+
+
+    static getCurrentPathname() {
+        return window.location.pathname;
     }
 
 }

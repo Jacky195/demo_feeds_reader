@@ -1,5 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 from django.utils.html import strip_tags
+import arrow
 
 
 class MiscUtils:
@@ -16,7 +17,10 @@ class MiscUtils:
 
     @staticmethod
     def datetime_to_string(date_object, date_format="%Y-%m-%d %H:%M:%S"):
-        return datetime.strftime(date_object, date_format)
+        if date_object > MiscUtils.now_date() - timedelta(days=1):  # within a day
+            return arrow.get(date_object).humanize()
+        else:
+            return datetime.strftime(date_object, date_format)
 
     @staticmethod
     def strip_html_tags(txt):

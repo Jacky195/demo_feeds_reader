@@ -9,20 +9,16 @@ export default class ApiFeed {
         ApiHttp.post(url, callbackSuccess, callbackError, data);
     };
 
-    static getAll = (callbackSuccess, callbackError, data) => {
-        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.GET_ALL);
+    static get = (callbackSuccess, callbackError, data) => {
+        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.GET);
         ApiHttp.get(url, callbackSuccess, callbackError, data);
     };
 
-    // static getById = (callbackSuccess, callbackError, data) => {
-    //     const url = URLUtils.buildAPIURL(URL_MAPPING.faq.getById);
-    //     ApiHttp.get(url, callbackSuccess, callbackError, data);
-    // };
-    //
-    // static delete = (callbackSuccess, callbackError, data) => {
-    //     const url = URLUtils.buildAPIURL(URL_MAPPING.faq.delete);
-    //     ApiHttp.post(url, callbackSuccess, callbackError, data);
-    // };
+
+    static delete = (callbackSuccess, callbackError, data) => {
+        const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.DELETE);
+        ApiHttp.delete(url, callbackSuccess, callbackError, data);
+    };
 
     static getAllSources = (callbackSuccess, callbackError) => {
         const url = URLUtils.buildAPIURL(BACKEND_URL, ADMIN_URL_MAPPING.FEED.GET_ALL_SOURCES);

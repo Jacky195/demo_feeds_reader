@@ -15,6 +15,7 @@ export const DATATABLE_HEADER_FEED = [
     {value: 'title_truncated', text: 'Title'},
     {value: 'description_truncated', text: 'Description'},
     {value: 'date_published', text: 'Pub Date'},
+    {value: 'date_fetched', text: 'Updated'},
     {value: 'action', text: 'Action'},
 ];
 

@@ -33,14 +33,15 @@ export default class DataTable extends React.Component{
                                     {
                                         header.map((col) =>
                                             <td key={MiscUtils.generateId()}>
-                                                {
-                                                    (col.value !== 'action') &&
-                                                    row[col.value]
-                                                }
-                                                {
-                                                    (col.value === 'action') &&
-                                                    <Button outline color="primary" size="sm">Edit</Button>
-                                                }
+                                                {row[col.value]}
+                                                {/*{*/}
+                                                {/*    (col.value !== 'action') &&*/}
+                                                {/*    row[col.value]*/}
+                                                {/*}*/}
+                                                {/*{*/}
+                                                {/*    (col.value === 'action') &&*/}
+                                                {/*    <Button outline color="primary" size="sm">Edit</Button>*/}
+                                                {/*}*/}
                                             </td>
                                         )
                                     }

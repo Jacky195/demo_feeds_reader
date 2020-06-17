@@ -14,4 +14,12 @@ export default class ApiHttp {
         this.method('post', url, callbackSuccess, callbackError, data);
     }
 
+    static put(url, callbackSuccess, callbackError, data) {
+        this.method('put', url, callbackSuccess, callbackError, data);
+    }
+
+    static delete(url, callbackSuccess, callbackError, data) {
+        this.method('delete', url, callbackSuccess, callbackError, data);
+    }
+
 }

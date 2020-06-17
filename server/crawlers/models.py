@@ -1,4 +1,3 @@
-import arrow
 from django.db import models
 from utils.MiscUtils import MiscUtils
 from utils.Constants import TRUNCATED_TEXT_LENGTH_SHORT, TRUNCATED_TEXT_LENGTH_LONG
@@ -59,14 +58,17 @@ class Feed(models.Model):
         self.original_url = url
 
     def get_date_published(self):
-        return arrow.get(self.date_published).humanize()
-        # return MiscUtils.datetime_to_string(self.date_published)
+        return MiscUtils.datetime_to_string(self.date_published)
 
     def set_date_published(self, date_obj):
         self.date_published = date_obj
 
+    def get_date_fetched(self):
+        return MiscUtils.datetime_to_string(self.date_fetched)
+
     def to_json(self):
         return {
+            'id': self.id,
             'source_code': self.get_source_code(),
             'author': self.get_author(),
             'title': self.get_title(),
@@ -74,7 +76,8 @@ class Feed(models.Model):
             'description': self.get_description(),
             'description_truncated': self.get_description_truncated(),
             'original_url': self.get_original_url(),
-            'date_published': self.get_date_published()
+            'date_published': self.get_date_published(),
+            'date_fetched': self.get_date_fetched()
         }
 
     @staticmethod
@@ -82,7 +85,18 @@ class Feed(models.Model):
         try:
             return Feed.objects.get(id=id)
         except e:
+            logger.error(e)
             return None
+
+    @staticmethod
+    def delete_by_id(id):
+        try:
+            Feed.objects.get(id=id).delete()
+            return 'success'
+        except e:
+            logger.error(e)
+            return 'Cannot delete feed id: {}'.format(id)
+
 
     @staticmethod
     def get_all(page, limit, keyword):
@@ -99,7 +113,7 @@ class Feed(models.Model):
                 result.append(feed_obj)
             return {
                 'feeds': result,
-                'totalPage': int(total_count / limit) + 1
+                'totalPage': int((total_count-1) / limit) + 1
             }
         except Exception as e:
             logger.error(e)
@@ -115,14 +129,17 @@ class Feed(models.Model):
             return []
 
     @staticmethod
-    def create(source, title, description, url=None):
+    def create_or_update(source, title, description, url=None, feed_id=None):
         try:
-            feed = Feed()
+            if not feed_id:
+                feed = Feed()
+                feed.set_date_published(MiscUtils.now_date())
+            else:
+                feed = Feed.get_by_id(feed_id)
             feed.set_source_code(source)
             feed.set_title(title)
             feed.set_description(description)
             feed.set_original_url(url)
-            feed.set_date_published(MiscUtils.now_date())
             feed.save()
             return "success"
         except Exception as e:

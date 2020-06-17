@@ -13,15 +13,8 @@ export default class Pager extends React.Component{
 
 
     renderPager = () => {
-
         const { currentPage } = this.state;
         const { totalPage } = this.props;
-
-        console.log('---- render pager')
-        console.log('---- currentPage: '+currentPage)
-        console.log('---- totalPage:'+totalPage)
-
-
         let lst = [];
         let size = currentPage + DATATABLE_PAGER_LENGTH - 1;
         if (size > totalPage)

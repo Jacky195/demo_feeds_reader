@@ -10,7 +10,7 @@ function App() {
     return (
         <Container>
             <Switch>
-                <Route exact path={[FEED.CREATE, FEED.EDIT]} component={ FeedCreateView }/>
+                <Route path={[FEED.CREATE, FEED.EDIT]} component={ FeedCreateView }/>
                 <Route path="*" component={ FeedManageView }/>
             </Switch>
 

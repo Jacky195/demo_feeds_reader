@@ -1,4 +1,5 @@
 import React from "react";
+import FontAwesome from 'react-fontawesome';
 import { Row, Col, InputGroup, InputGroupAddon, Button, Input} from 'reactstrap';
 import { DataTable } from '../../components';
 import { BlockingComponent } from '../../../../web_common/components';
@@ -10,20 +11,14 @@ import { COOKIE_NAME, DEFAULT_PAGE_SIZE, DATATABLE_HEADER_FEED, FEED } from '../
 export default class FeedManageView extends React.Component{
 
     state = {
-        isProcessing: false,
-        pageSize: MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) ? MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) : DEFAULT_PAGE_SIZE,
-        page: 1,
-        filterKeyword: '',
+        isProcessing: false, // used for showing loading indicator
+        filterKeyword: '', // filter by pattern
         feeds: [],
-        totalPage: 0
+        // pager
+        page: 1,
+        totalPage: 0,
+        pageSize: MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) ? MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) : DEFAULT_PAGE_SIZE
     }
-
-
-    // changeInput = (e, key) => {
-    //     let obj = {};
-    //     obj[key] = e.target.value;
-    //     this.setState(obj);
-    // };
 
 
     onEnterPress = (e) => {
@@ -50,13 +45,22 @@ export default class FeedManageView extends React.Component{
     getFeeds = () => {
         const callbackSuccess = (response) => {
             const {feeds, totalPage} = response;
+            const feedsWithAction = feeds.map((feed) => ({
+                ...feed,
+                action: (
+                    <Button outline color="primary" size="sm"
+                            href={FEED.EDIT+'/'+feed.id}>
+                        <FontAwesome name="pencil"/>
+                    </Button>
+                )
+            }));
             setTimeout(() => {
                 this.setState({
                 isProcessing: false,
-                feeds,
+                feeds: feedsWithAction,
                 totalPage
             });
-            }, 500); //  wait 0.5s, in order to show loading indicator
+            }, 300); //  wait 0.3s, in order to show loading indicator
         };
         const callbackError = (error) => {
             MiscUtils.commonCallbackError(this, error);
@@ -68,7 +72,7 @@ export default class FeedManageView extends React.Component{
                 pageSize,
                 filterKeyword
             }
-            ApiFeed.getAll(callbackSuccess, callbackError, data);
+            ApiFeed.get(callbackSuccess, callbackError, data);
         });
     }
 
@@ -92,7 +96,9 @@ export default class FeedManageView extends React.Component{
                                        onKeyDown={this.onEnterPress}
                                 />
                                 <InputGroupAddon addonType="append">
-                                    <Button color="success">Search</Button>
+                                    <Button color="success">
+                                        <FontAwesome name="filter"/>
+                                    </Button>
                                 </InputGroupAddon>
                             </InputGroup>
                         </Col>
@@ -102,7 +108,8 @@ export default class FeedManageView extends React.Component{
                     </Row>
 
                     <DataTable pageLimitChangeCallback={this.pageLimitChangeCallback}
-                               header={DATATABLE_HEADER_FEED} data={feeds}
+                               header={DATATABLE_HEADER_FEED}
+                               data={feeds}
                                pageSize={pageSize}
                                // pager
                                page={page}
