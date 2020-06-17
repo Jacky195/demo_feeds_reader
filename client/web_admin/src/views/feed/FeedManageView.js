@@ -17,6 +17,7 @@ export default class FeedManageView extends React.Component{
         // pager
         page: 1,
         totalPage: 0,
+        totalFeed: 0,
         pageSize: MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) ? MiscUtils.getFromCookie(COOKIE_NAME.PAGE_SIZE) : DEFAULT_PAGE_SIZE
     }
 
@@ -44,7 +45,7 @@ export default class FeedManageView extends React.Component{
 
     getFeeds = () => {
         const callbackSuccess = (response) => {
-            const {feeds, totalPage} = response;
+            const {feeds, totalPage, totalFeed} = response;
             const feedsWithAction = feeds.map((feed) => ({
                 ...feed,
                 action: (
@@ -58,7 +59,8 @@ export default class FeedManageView extends React.Component{
                 this.setState({
                 isProcessing: false,
                 feeds: feedsWithAction,
-                totalPage
+                totalPage,
+                totalFeed
             });
             }, 300); //  wait 0.3s, in order to show loading indicator
         };
@@ -83,10 +85,15 @@ export default class FeedManageView extends React.Component{
 
 
     render() {
-        const { isProcessing, feeds, pageSize, page, totalPage } = this.state;
+        const { isProcessing, feeds, pageSize, page, totalPage, totalFeed } = this.state;
         return (
             <div>
-                <h4 className="paddingVertical20">Feed Management</h4>
+                <h4 className="paddingVertical20">
+                    Feed Management
+                    {
+                        totalFeed > 0 && " ("+totalFeed+" feeds) "
+                    }
+                </h4>
                 <BlockingComponent isProcessing={isProcessing}>
                     <Row className="paddingVertical20">
                         <Col sm="3" xs="6">

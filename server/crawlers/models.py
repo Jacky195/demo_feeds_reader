@@ -106,7 +106,7 @@ class Feed(models.Model):
             cache_key = MemCache.gen_key([id])
             MemCache.delete_cache(cache_key)
             # clear cache for datatable
-            MemCache.delete_cache_pattern("datatable_*")
+            MemCache.delete_cache_datatable()
             return 'success'
         except e:
             logger.error(e)
@@ -141,7 +141,8 @@ class Feed(models.Model):
                 result.append(feed_obj)
             cache_obj = {
                 'feeds': result,
-                'totalPage': int((total_count-1) / limit) + 1
+                'totalPage': int((total_count-1) / limit) + 1,
+                'totalFeed': total_count
             }
             # save to cache
             MemCache.set_cache(cache_key, cache_obj)
@@ -173,7 +174,7 @@ class Feed(models.Model):
             feed.set_original_url(url)
             feed.save()
             # clear cache for datatable
-            MemCache.delete_cache_pattern("datatable_*")
+            MemCache.delete_cache_datatable()
             # save to cache
             cache_key = MemCache.gen_key([feed.id])
             MemCache.set_cache(cache_key, feed)
@@ -210,3 +211,7 @@ class MemCache:
     @staticmethod
     def delete_cache_pattern(pattern):
         cache.delete_pattern(pattern)
+
+    @staticmethod
+    def delete_cache_datatable():
+        MemCache.delete_cache_pattern("datatable_*")

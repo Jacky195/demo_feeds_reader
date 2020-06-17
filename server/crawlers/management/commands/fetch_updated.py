@@ -11,5 +11,6 @@ from crawlers.management.base_command import CrawlerCommand
 class Command(CrawlerCommand):
     help = 'Only fetch the updated feeds in specific sites'
 
-    def handle(self, *args, **options):
+    @staticmethod
+    def handle(*args, **options):
         pass
