@@ -15,6 +15,4 @@ def get_feeds(request):
     if not page_size.isdigit() or not page.isdigit():
         return HTTPUtils.format_data_for_ajax({'status': 'page & page size must be numeric'})
 
-    return HTTPUtils.format_data_for_ajax({
-        'feeds': Feed.get_all(int(page), int(page_size), filter_keyword)
-    })
+    return HTTPUtils.format_data_for_ajax(Feed.get_all(int(page), int(page_size), filter_keyword))

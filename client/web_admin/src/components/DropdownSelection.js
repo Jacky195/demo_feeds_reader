@@ -4,12 +4,14 @@ import { MiscUtils } from '../../../web_common/extras';
 
 export default class DropdownSelection extends React.Component{
     render() {
-        const { optionList } = this.props;
+        const { optionList, onChangeCallback, currentValue } = this.props;
         return (
-            <Input type="select" name="select">
+            <Input type="select" name="select" value={currentValue} onChange={(e) => onChangeCallback(e.target.value)}>
                 {
                     optionList.map((option, idx) =>
-                        <option value={option.value} key={MiscUtils.generateId()}>{ option.text }</option>
+                        <option value={option.value} key={MiscUtils.generateId()}>
+                            { option.text }
+                        </option>
                     )
                 }
             </Input>

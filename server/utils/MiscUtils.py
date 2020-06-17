@@ -1,4 +1,5 @@
 from datetime import datetime
+from django.utils.html import strip_tags
 
 
 class MiscUtils:
@@ -14,5 +15,10 @@ class MiscUtils:
         return datetime.strptime(txt, date_format)
 
     @staticmethod
-    def datetime_to_string(date_object, date_format="%Y-%m/%d %H:%M:%S"):
+    def datetime_to_string(date_object, date_format="%Y-%m-%d %H:%M:%S"):
         return datetime.strftime(date_object, date_format)
+
+    @staticmethod
+    def strip_html_tags(txt):
+        return strip_tags(txt)
+

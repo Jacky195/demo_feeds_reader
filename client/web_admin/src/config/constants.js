@@ -8,3 +8,13 @@ export const PAGE_SIZE_OPTIONS = [
     {value: 10, text: '10'},
     {value: 15, text: '15'}
 ];
+export const DATATABLE_PAGER_LENGTH = 3;
+export const DATATABLE_HEADER_FEED = [
+    {value: 'idx', text: '#'},
+    {value: 'source_code', text: 'Source'},
+    {value: 'title_truncated', text: 'Title'},
+    {value: 'description_truncated', text: 'Description'},
+    {value: 'date_published', text: 'Pub Date'},
+    {value: 'action', text: 'Action'},
+];
+

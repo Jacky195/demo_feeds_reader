@@ -3,57 +3,69 @@ import { Table, Row, Col, Button } from 'reactstrap';
 import Pager from './Pager';
 import { DropdownSelection } from "./index";
 import { PAGE_SIZE_OPTIONS } from '../config';
+import { MiscUtils } from '../../../web_common/extras';
 
 
 export default class DataTable extends React.Component{
 
-
     render() {
+        const { header, data, pageLimitChangeCallback, pageSize, page } = this.props;
         return (
             <>
                 <Table hover responsive size="sm">
-                      <thead>
+                    <thead>
                         <tr>
-                          <th>#</th>
-                          <th>Source</th>
-                          <th>Title</th>
-                          <th>Description</th>
-                            <th>Action</th>
+                            {
+                                header.map((col) =>
+                                    <th key={MiscUtils.generateId()}>
+                                        {col.text}
+                                    </th>
+                                )
+                            }
                         </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <th scope="row">1</th>
-                          <td>washingtonpost</td>
-                          <td>djsf kdsjfb kdb dskf</td>
-                          <td>jkadf dsfh dskfgb dflbfskd</td>
-                            <td>
-                                <Button outline color="primary" size="sm">Edit</Button>
-                            </td>
-                        </tr>
-                        <tr>
-                          <th scope="row">2</th>
-                          <td>washingtonpost</td>
-                          <td>f dslfkj sdlgfsdg gd</td>
-                          <td>@fat</td>
-                            <td><Button outline color="primary" size="sm">Edit</Button></td>
-                        </tr>
-                        <tr>
-                          <th scope="row">3</th>
-                          <td>feedforall</td>
-                          <td>the Bird</td>
-                          <td>f dslkfj rlodflgfd</td>
-                            <td><Button outline color="primary" size="sm">Edit</Button></td>
-                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {
+                            data.map((row) =>
+                                <tr key={MiscUtils.generateId()}>
+
+                                    {
+                                        header.map((col) =>
+                                            <td key={MiscUtils.generateId()}>
+                                                {
+                                                    (col.value !== 'action') &&
+                                                    row[col.value]
+                                                }
+                                                {
+                                                    (col.value === 'action') &&
+                                                    <Button outline color="primary" size="sm">Edit</Button>
+                                                }
+                                            </td>
+                                        )
+                                    }
+
+
+                                </tr>
+                            )
+                        }
+
                       </tbody>
                     </Table>
 
                     <Row>
                         <Col sm="1" xs="6">
-                            <DropdownSelection optionList={PAGE_SIZE_OPTIONS} />
+                            <DropdownSelection optionList={PAGE_SIZE_OPTIONS}
+                                               onChangeCallback={pageLimitChangeCallback}
+                                               currentValue={pageSize}
+                            />
                         </Col>
                         <Col sm={{ size: 4, offset: 7 }} xs="6" className="paddingTop10">
-                            <Pager {...this.props} />
+                            {
+                                this.props.totalPage > 0 &&
+                                <Pager {...this.props} />
+                            }
+
                         </Col>
                     </Row>
 

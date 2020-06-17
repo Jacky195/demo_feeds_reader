@@ -1,5 +1,6 @@
 from django.db import models
 from utils.MiscUtils import MiscUtils
+from utils.Constants import TRUNCATED_TEXT_LENGTH_SHORT, TRUNCATED_TEXT_LENGTH_LONG
 import logging
 logger = logging.getLogger('crawlers')
 
@@ -27,8 +28,16 @@ class Feed(models.Model):
     def get_title(self):
         return self.title
 
+    def get_title_truncated(self, size=TRUNCATED_TEXT_LENGTH_SHORT):
+        txt = self.title[:size]
+        return txt if len(self.title) <= size else "{}...".format(txt)
+
     def get_description(self):
         return self.description
+
+    def get_description_truncated(self, size=TRUNCATED_TEXT_LENGTH_LONG):
+        txt = MiscUtils.strip_html_tags(self.description)[:size]
+        return txt if len(self.description) <= size else "{}...".format(txt)
 
     def get_original_url(self):
         return self.original_url
@@ -41,7 +50,9 @@ class Feed(models.Model):
             'source_code': self.get_source_code(),
             'author': self.get_author(),
             'title': self.get_title(),
+            'title_truncated': self.get_title_truncated(),
             'description': self.get_description(),
+            'description_truncated': self.get_description_truncated(),
             'original_url': self.get_original_url(),
             'date_published': self.get_date_published()
         }
@@ -56,10 +67,20 @@ class Feed(models.Model):
     @staticmethod
     def get_all(page, limit, keyword):
         try:
-            feeds = Feed.objects.filter(source_code__icontains=keyword)[(page-1)*limit:page*limit]
-            feeds = [feed.to_json() for feed in feeds]
-            logger.debug(feeds)
-            return feeds
+            feeds = Feed.objects.filter(source_code__icontains=keyword)
+            total_count = feeds.count()
+            feeds = feeds[(page-1)*limit:page*limit]
+            idx = (page-1)*limit
+            result = []
+            for feed in feeds:
+                idx += 1
+                feed_obj = feed.to_json()
+                feed_obj['idx'] = idx
+                result.append(feed_obj)
+            return {
+                'feeds': result,
+                'totalPage': int(total_count / limit) + 1
+            }
         except Exception as e:
             logger.error(e)
             return []

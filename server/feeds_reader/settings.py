@@ -36,22 +36,11 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-CORS_ORIGIN_ALLOW_ALL = True  # for assignment, I allow ALL
-# CORS_ORIGIN_WHITELIST = [
-#     'http://localhost:3030',
-# ]
-# CORS_ORIGIN_REGEX_WHITELIST = [
-#     'http://localhost:3030',
-# ]
-# CORS_ALLOW_METHODS = [
-#     'DELETE',
-#     'GET',
-#     'OPTIONS',
-#     'PATCH',
-#     'POST',
-#     'PUT',
-# ]
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3548',  # dev - client admin
+    'http://localhost:6584',  # staging - client admin
+    'http://localhost:8562',  # production - client admin
+]
 
 
 ROOT_URLCONF = 'feeds_reader.urls'
