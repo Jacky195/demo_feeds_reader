@@ -5,7 +5,6 @@ from crawlers.sites.base_function import BaseFunction
 from crawlers.sites.feedforall.settings import CHANNEL_LIST, DATE_FORMAT, SOURCE_CODE
 from utils.Constants import LIMIT_ALL
 from utils.MiscUtils import MiscUtils
-
 import logging
 logger = logging.getLogger('crawlers')
 
