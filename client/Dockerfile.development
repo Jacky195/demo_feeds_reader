@@ -1,0 +1,15 @@
+# Client: User & Admin
+
+# node 12.15.0
+FROM alpine:3.11.6
+
+RUN apk update && apk add --update nodejs npm
+WORKDIR /opt/app
+COPY package*.json ./
+RUN npm install && npm install -g webpack webpack-dev-server webpack-cli
+COPY . .
+
+# _deployment/docker_compose/.env
+EXPOSE ${PORT_CLIENT_USER_DEVELOPMENT} ${PORT_CLIENT_ADMIN_DEVELOPMENT}
+
+CMD ["npm", "run", "start-client-dev"]

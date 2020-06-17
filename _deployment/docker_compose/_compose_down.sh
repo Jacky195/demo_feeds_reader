@@ -1,0 +1,1 @@
+docker-compose -f ./docker-compose.${MY_CUSTOM_ENV_DOCKER}.yml down

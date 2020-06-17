@@ -1,0 +1,1 @@
+MY_CUSTOM_ENV_DOCKER=development ./_compose_down.sh
