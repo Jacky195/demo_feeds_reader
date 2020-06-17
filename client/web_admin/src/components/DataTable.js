@@ -29,24 +29,13 @@ export default class DataTable extends React.Component{
                         {
                             data.map((row) =>
                                 <tr key={MiscUtils.generateId()}>
-
                                     {
                                         header.map((col) =>
                                             <td key={MiscUtils.generateId()}>
                                                 {row[col.value]}
-                                                {/*{*/}
-                                                {/*    (col.value !== 'action') &&*/}
-                                                {/*    row[col.value]*/}
-                                                {/*}*/}
-                                                {/*{*/}
-                                                {/*    (col.value === 'action') &&*/}
-                                                {/*    <Button outline color="primary" size="sm">Edit</Button>*/}
-                                                {/*}*/}
                                             </td>
                                         )
                                     }
-
-
                                 </tr>
                             )
                         }
@@ -69,9 +58,6 @@ export default class DataTable extends React.Component{
 
                         </Col>
                     </Row>
-
-
-
             </>
         );
     }

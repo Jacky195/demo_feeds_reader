@@ -8,7 +8,7 @@ export default class DropdownSelection extends React.Component{
         return (
             <Input type="select" name="select" value={currentValue} onChange={(e) => onChangeCallback(e.target.value)}>
                 {
-                    optionList.map((option, idx) =>
+                    optionList.map((option) =>
                         <option value={option.value} key={MiscUtils.generateId()}>
                             { option.text }
                         </option>
@@ -17,5 +17,4 @@ export default class DropdownSelection extends React.Component{
             </Input>
         );
     }
-
 }
