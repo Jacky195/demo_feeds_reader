@@ -1,7 +1,7 @@
 class BaseSite(object):
 
     @classmethod
-    def save_item(cls, item):
+    def save_feed(cls, feed):
         raise NotImplementedError()
 
     def fetch_all(self):

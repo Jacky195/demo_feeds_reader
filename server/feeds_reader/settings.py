@@ -21,18 +21,27 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'crawlers.apps.CrawlersConfig'
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_REGEX_WHITELIST = [
+    'http://localhost:3548',  # dev - client admin
+    'http://localhost:6584',  # staging - client admin
+    'http://localhost:8562',  # production - client admin
+]
+
 
 ROOT_URLCONF = 'feeds_reader.urls'
 
@@ -64,10 +73,19 @@ DATABASES = {
         'USER': os.environ.get('DB_USER'),
         'PASSWORD': os.environ.get('DB_PASSWORD'),
         'HOST': os.environ.get('DB_HOST'),
-        'PORT': os.environ.get('DB_PORT'),
-        'TEST': {
-            'NAME': 'feeds_reader_test',
-        }
+        'PORT': os.environ.get('DB_PORT')
+    }
+}
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://feeds_reader_cache_redis_{}:6379/1".format(DEPLOYMENT_ENV),
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient"
+        },
+        "KEY_PREFIX": "joinus_{}".format(DEPLOYMENT_ENV)
     }
 }
 
@@ -166,3 +184,7 @@ FEED_SITES = [
     'crawlers.sites.washingtonpost',
     'crawlers.sites.feedforall'
 ]
+
+
+CACHE_TIMEOUT_UNTIL_DELETED = None  # never expire unless being deleted manually by code
+CACHE_TIMEOUT_AUTO = 60*60  # 60 minutes
